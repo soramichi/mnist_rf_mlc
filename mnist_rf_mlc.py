@@ -47,15 +47,14 @@ def get_indices(r, shape):
         ret += (int(r/mul), )
         r = int(r % mul)
 
-    return ret
+    return ret        
 
 def inject_error(np_array, error_rate):
-    print(np_array.dtype)
     buff = bytearray(np_array.data.tobytes())
 
     total_bits = len(buff) * 8
     n_error_bits = int(total_bits * error_rate)
-    
+
     for _ in range(0, n_error_bits):
         r = int(np.random.randint(0, total_bits))
         (pos, bit) = get_indices(r, (len(buff), 8))
