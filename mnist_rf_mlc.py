@@ -1,3 +1,4 @@
+import sys
 import numpy as np
 import sklearn as sk
 import functools
@@ -79,7 +80,7 @@ def confirm_result(clf, x_data, y_data):
 def main():
     # setting
     N = 60000
-    BER = 0.001
+    BER = float(sys.argv[1])
     
     x, y = load_data()
 
