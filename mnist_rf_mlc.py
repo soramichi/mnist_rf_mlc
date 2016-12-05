@@ -14,8 +14,6 @@ def load_data():
     print("fetch MNIST dataset")
     mnist = fetch_mldata('MNIST original', data_home="./data")
     #mnist = fetch_mldata('MNIST', data_home="./data")
-    mnist.data   = mnist.data.astype(np.float32)
-    mnist.data  /= 255
     
     mnist.target = mnist.target.astype(np.int32)
 
@@ -90,13 +88,16 @@ def main():
     print("inject bit errors. BER: %f" % BER)
     x_train = inject_error(x_train, BER)
 
+    x_train = x_train.astype(np.float32) / 255
+    x_test = x_test.astype(np.float32) / 255
+
     print("training")
     clf = RandomForestClassifier(n_estimators=50, criterion='gini', max_depth=None, min_samples_split=2,
                                  min_samples_leaf=1, min_weight_fraction_leaf=0.0, max_features='auto',
                                  max_leaf_nodes=None, bootstrap=True, oob_score=False, n_jobs=-1,
                                  random_state=None, verbose=0, warm_start=False, class_weight=None)
 
-    clf = clf.fit(x_train, y_train, force_no_check=True)
+    clf = clf.fit(x_train, y_train)
     print("test")
     confirm_result(clf, x_test, y_test)
 
